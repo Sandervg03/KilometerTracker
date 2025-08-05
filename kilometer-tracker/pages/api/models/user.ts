@@ -1,20 +1,25 @@
 import {
     QueryPasswordByEmailQuery,
+    QueryUserByEmailQuery,
     RegisterUserWithPasswordMutation,
     RegisterUserWithPasswordMutationVariables
 } from '../../../src/generated/graphql';
-import { QUERY_PASSWORD_BY_EMAIL, REGISTER_USER_WITH_PASSWORD } from '../../../src/graphql/operations';
-import { publicClient, createAuthenticatedClient } from '../../../src/graphql/client';
+import { QUERY_PASSWORD_BY_EMAIL, QUERY_USER_BY_EMAIL, REGISTER_USER_WITH_PASSWORD } from '../../../src/graphql/operations';
+import { publicClient, userClient, adminClient } from '../../../src/graphql/client';
 
 export class User {
     private _email: string;
-    private _password: string;
+    private _password: string | null;
     private _firstName: string;
     private _lastName: string;
 
-    constructor(email: string, password: string, firstName: string, lastName: string) {
+    constructor(email: string, password: string | null, firstName: string, lastName: string) {
         this.email = email;
-        this.password = password;
+        if (password === null) {
+            this._password = null;
+        } else {
+            this.password = password;
+        }
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -70,6 +75,10 @@ export class User {
     }
 
     async save(): Promise<RegisterUserWithPasswordMutation> {
+        if (!this._password || this._password.length === 0) {
+            throw new Error("Missing required fields: Password is required for new user registration");
+        }
+
         const variables: RegisterUserWithPasswordMutationVariables = {
             email: this.email,
             firstName: this.firstName,
@@ -85,12 +94,34 @@ export class User {
     }
 
     static async getPasswordByEmail(email: string): Promise<QueryPasswordByEmailQuery> {
-        const result: QueryPasswordByEmailQuery = await publicClient.request(QUERY_PASSWORD_BY_EMAIL, { email });
+        const result: QueryPasswordByEmailQuery = await adminClient.request(QUERY_PASSWORD_BY_EMAIL, { email });
 
         if (result.password.length > 0) {
             return result;
         }
 
         throw new Error("User not found.");
+    }
+
+    static async getByEmail(email: string): Promise<User> {
+        const result: QueryUserByEmailQuery = await adminClient.request(QUERY_USER_BY_EMAIL, { email });
+
+        if (result.user.length > 0) {
+            const user = result.user[0];
+            return new User(user.email, null, user.first_name, user.last_name);
+        } else {
+            throw new Error("User not found.");
+        }
+    }
+
+    static async getByEmailAuthenticated(email: string, jwtToken: string): Promise<User> {
+        const result: QueryUserByEmailQuery = await userClient(jwtToken).request(QUERY_USER_BY_EMAIL, { email });
+
+        if (result.user.length > 0) {
+            const user = result.user[0];
+            return new User(user.email, null, user.first_name, user.last_name);
+        } else {
+            throw new Error("User not found.");
+        }
     }
 }

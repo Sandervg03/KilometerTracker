@@ -1,15 +1,15 @@
-import { useRouter } from "next/router";
-import styles from "../../../styles/Home.module.css";
 import { useState } from "react";
-import { toastWarn } from "../../components/toast_messages/toast_warn";
-import { toastError } from "../../components/toast_messages/toast_error";
+import styles from "../../../../styles/Home.module.css";
+import { useRouter } from "next/router";
+import { toastWarn } from "../../../components/toast_messages/toast_warn";
+import { toastError } from "../../../components/toast_messages/toast_error";
+import { toastSuccess } from "../../../components/toast_messages/toast_success";
 
-export default function Login() {
+export default function GroupCreate() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    ownerEmail: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,11 +25,10 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/user/login", {
+      const response = await fetch("/api/group/admin/create", {
         method: "POST",
         body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
+          ownerEmail: formData.ownerEmail,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -41,11 +40,15 @@ export default function Login() {
       setIsLoading(false);
 
       if (response.ok) {
-        router.push("/group/overview");
+        toastSuccess("Group created successfully");
       } else {
         switch (response.status) {
           case 401:
-            toastWarn(`Incorrect credentials: ${result.error}`);
+            toastWarn(`Session expired: ${result.error}`);
+            break;
+          case 403:
+            toastWarn(`Permission denied`);
+            router.push("/user/login");
             break;
           case 404:
             toastWarn(`User not found: ${result.error}`);
@@ -54,7 +57,7 @@ export default function Login() {
             toastWarn(`Service unavailable: ${result.error}`);
             break;
           default:
-            toastWarn(`Error: ${result.error || "Login failed"}`);
+            toastWarn(`Error: ${result.error || "Creation failed"}`);
         }
       }
     } catch (error) {
@@ -70,25 +73,17 @@ export default function Login() {
         {isLoading && <p>Loading...</p>}
         {!isLoading && (
           <>
-            <h1>Login</h1>
+            <h1>Create a group</h1>
             <form onSubmit={handleSubmit}>
               <input
                 type="text"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
+                name="ownerEmail"
+                placeholder="Group owner email"
+                value={formData.ownerEmail}
                 onChange={handleChange}
                 required
               />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-              <button type="submit">Login</button>
+              <button type="submit">Create Group</button>
             </form>
           </>
         )}

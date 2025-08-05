@@ -100,6 +100,7 @@ export type Date_Comparison_Exp = {
 export type Group = {
   __typename?: 'group';
   id: Scalars['uuid']['output'];
+  name?: Maybe<Scalars['String']['output']>;
   owner: Scalars['String']['output'];
 };
 
@@ -131,6 +132,7 @@ export type Group_Bool_Exp = {
   _not?: InputMaybe<Group_Bool_Exp>;
   _or?: InputMaybe<Array<Group_Bool_Exp>>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
   owner?: InputMaybe<String_Comparison_Exp>;
 };
 
@@ -143,6 +145,7 @@ export enum Group_Constraint {
 /** input type for inserting data into table "group" */
 export type Group_Insert_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   owner?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -150,6 +153,7 @@ export type Group_Insert_Input = {
 export type Group_Max_Fields = {
   __typename?: 'group_max_fields';
   id?: Maybe<Scalars['uuid']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
   owner?: Maybe<Scalars['String']['output']>;
 };
 
@@ -157,6 +161,7 @@ export type Group_Max_Fields = {
 export type Group_Min_Fields = {
   __typename?: 'group_min_fields';
   id?: Maybe<Scalars['uuid']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
   owner?: Maybe<Scalars['String']['output']>;
 };
 
@@ -179,6 +184,7 @@ export type Group_On_Conflict = {
 /** Ordering options when selecting data from "group". */
 export type Group_Order_By = {
   id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
   owner?: InputMaybe<Order_By>;
 };
 
@@ -192,12 +198,15 @@ export enum Group_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Name = 'name',
+  /** column name */
   Owner = 'owner'
 }
 
 /** input type for updating data in table "group" */
 export type Group_Set_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   owner?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -212,6 +221,7 @@ export type Group_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Group_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   owner?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -219,6 +229,8 @@ export type Group_Stream_Cursor_Value_Input = {
 export enum Group_Update_Column {
   /** column name */
   Id = 'id',
+  /** column name */
+  Name = 'name',
   /** column name */
   Owner = 'owner'
 }
@@ -1583,6 +1595,22 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['uuid']['input']>>;
 };
 
+export type InsertGroupMutationVariables = Exact<{
+  id: Scalars['uuid']['input'];
+  owner: Scalars['String']['input'];
+}>;
+
+
+export type InsertGroupMutation = { __typename?: 'mutation_root', insert_group?: { __typename?: 'group_mutation_response', affected_rows: number } | null };
+
+export type InsertGroupUserMutationVariables = Exact<{
+  groupId?: InputMaybe<Scalars['uuid']['input']>;
+  userEmail?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type InsertGroupUserMutation = { __typename?: 'mutation_root', insert_group_users?: { __typename?: 'group_users_mutation_response', affected_rows: number } | null };
+
 export type InsertPasswordMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -1612,9 +1640,23 @@ export type InsertUserMutationVariables = Exact<{
 
 export type InsertUserMutation = { __typename?: 'mutation_root', insert_user?: { __typename?: 'user_mutation_response', affected_rows: number } | null };
 
+export type GroupByIdQueryVariables = Exact<{
+  id: Scalars['uuid']['input'];
+}>;
+
+
+export type GroupByIdQuery = { __typename?: 'query_root', group: Array<{ __typename?: 'group', id: string, name?: string | null, owner: string }> };
+
 export type QueryPasswordByEmailQueryVariables = Exact<{
   email: Scalars['String']['input'];
 }>;
 
 
 export type QueryPasswordByEmailQuery = { __typename?: 'query_root', password: Array<{ __typename?: 'password', email: string, password: string }> };
+
+export type QueryUserByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type QueryUserByEmailQuery = { __typename?: 'query_root', user: Array<{ __typename?: 'user', created_at: any, email: string, first_name: string, last_name: string }> };

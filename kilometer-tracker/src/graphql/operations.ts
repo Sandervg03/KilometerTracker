@@ -1,6 +1,35 @@
 // Auto-generated GraphQL operations - DO NOT EDIT MANUALLY
 // Run 'npm run generate-operations' to regenerate this file
 
+export const INSERT_GROUP = `mutation InsertGroup(
+    $id: uuid!
+    $owner: String!
+) {
+  insert_group(
+    objects: [
+        { 
+            id: $id
+            owner: $owner 
+        }
+    ]
+  ) {
+    affected_rows
+  }
+}`;
+
+export const INSERT_GROUP_USER = `mutation InsertGroupUser($groupId: uuid, $userEmail: String) {
+  insert_group_users(
+    objects: [
+      {
+        group: $groupId
+        email: $userEmail
+      }
+    ]
+  ) {
+    affected_rows
+  }
+}`;
+
 export const INSERT_PASSWORD = `mutation InsertPassword(
   $email: String!
   $password: String!
@@ -62,9 +91,26 @@ export const INSERT_USER = `mutation InsertUser(
   }
 }`;
 
+export const GROUP_BY_ID = `query GroupById($id: uuid!) {
+  group(where: { id: { _eq: $id } }) {
+    id
+    name
+    owner
+  }
+}`;
+
 export const QUERY_PASSWORD_BY_EMAIL = `query QueryPasswordByEmail($email: String!) {
   password(where: { email: { _eq: $email } }) {
     email
     password
+  }
+}`;
+
+export const QUERY_USER_BY_EMAIL = `query QueryUserByEmail($email: String!) {
+  user(where: { email: { _eq: $email } }) {
+    created_at
+    email
+    first_name
+    last_name
   }
 }`;

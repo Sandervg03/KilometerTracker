@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styles from "../../../styles/Home.module.css";
 import { useRouter } from "next/router";
-import { Bounce, toast } from "react-toastify";
 import { toastWarn } from "../../components/toast_messages/toast_warn";
+import { toastError } from "../../components/toast_messages/toast_error";
 
 export default function Register() {
   const router = useRouter();
@@ -63,21 +63,7 @@ export default function Register() {
         }
       }
     } catch (error) {
-      console.error("Registration error:", error);
-      toast.error(
-        "Network error. Please check your connection and try again.",
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Bounce,
-        }
-      );
+      toastError("Network error. Please check your connection and try again.");
     }
   };
 

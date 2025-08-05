@@ -13,7 +13,9 @@
     "generate-all": "npm run generate-operations && npm run codegen"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.4.5",
     "react": "19.1.1",
     "react-dom": "19.1.1",

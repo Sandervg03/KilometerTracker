@@ -1,0 +1,15 @@
+mutation InsertGroup(
+    $id: uuid!
+    $owner: String!
+) {
+  insert_group(
+    objects: [
+        { 
+            id: $id
+            owner: $owner 
+        }
+    ]
+  ) {
+    affected_rows
+  }
+}

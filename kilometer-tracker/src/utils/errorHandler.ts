@@ -1,6 +1,15 @@
 import { NextApiResponse } from "next";
 
 export function handleApiError(error: any, res: NextApiResponse): void {
+
+    // Invalid or expired token
+    if (error.message?.includes("Invalid or expired token")) {
+        return res.status(401).json({
+            message: "Unauthorized",
+            error: "Your session has expired. Please log in again."
+        });
+    }
+
     // Email already exists
     if (error.message?.includes("user_pkey") ||
         error.message?.includes("duplicate key") ||
@@ -49,7 +58,7 @@ export function handleApiError(error: any, res: NextApiResponse): void {
     if (error.message?.includes("GraphQL Error")) {
         return res.status(400).json({
             message: "Database error",
-            error: "Unable to create user account. Please try again."
+            error: "Something went wrong, please try again or contact support."
         });
     }
 
@@ -59,6 +68,14 @@ export function handleApiError(error: any, res: NextApiResponse): void {
             message: "Service unavailable",
             error: "Unable to connect to database. Please try again later."
         });
+    }
+
+    // User not found
+    if (error.message?.includes("User not found.")) {
+        return res.status(404).json({
+            message: "Not found",
+            error: "The requested user could not be found"
+        })
     }
 
     // Default error

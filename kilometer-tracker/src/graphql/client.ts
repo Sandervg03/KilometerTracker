@@ -30,6 +30,7 @@ export class GraphQLClient {
         const result = await response.json();
 
         if (result.errors) {
+            console.log(result.errors)
             const errorMessage = result.errors.map(e => e.message).join(', ');
             throw new Error(`GraphQL Error: ${errorMessage}`);
         }
@@ -38,19 +39,26 @@ export class GraphQLClient {
     }
 }
 
-export const createAuthenticatedClient = (userEmail: string) => {
-    return new GraphQLClient(
-        'https://modern-mutt-89.hasura.app/v1/graphql',
-        {
-            'x-hasura-role': 'user',
-            'x-hasura-user-email': userEmail
-        }
-    );
-};
+export const adminClient = new GraphQLClient(
+    process.env.HASURA_ENDPOINT,
+    {
+        'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET,
+    }
+);
 
 export const publicClient = new GraphQLClient(
-    'https://modern-mutt-89.hasura.app/v1/graphql',
+    process.env.HASURA_ENDPOINT,
     {
         'x-hasura-role': 'public'
     }
 );
+
+export const userClient = (token: string) => {
+    return new GraphQLClient(
+        process.env.HASURA_ENDPOINT,
+        {
+            'x-hasura-role': 'user',
+            'Authorization': `Bearer ${token}`
+        }
+    );
+};

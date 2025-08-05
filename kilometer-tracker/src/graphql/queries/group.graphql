@@ -1,0 +1,7 @@
+query GroupById($id: uuid!) {
+  group(where: { id: { _eq: $id } }) {
+    id
+    name
+    owner
+  }
+}

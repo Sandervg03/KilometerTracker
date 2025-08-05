@@ -1,0 +1,9 @@
+
+query QueryUserByEmail($email: String!) {
+  user(where: { email: { _eq: $email } }) {
+    created_at
+    email
+    first_name
+    last_name
+  }
+}
