@@ -15,6 +15,14 @@ export const INSERT_GROUP = `mutation InsertGroup(
   ) {
     affected_rows
   }
+
+  insert_group_users(
+    objects: [
+      { group: $id, email: $owner }
+    ]
+  ) {
+    affected_rows
+  }
 }`;
 
 export const INSERT_GROUP_USER = `mutation InsertGroupUser($groupId: uuid, $userEmail: String) {
@@ -96,6 +104,13 @@ export const GROUP_BY_ID = `query GroupById($id: uuid!) {
     id
     name
     owner
+  }
+}`;
+
+export const GROUPS_BY_USER_EMAIL = `query GroupsByUserEmail($email: String!) {
+  group_users(where: {email: {_eq: $email}}) {
+    email
+    group
   }
 }`;
 

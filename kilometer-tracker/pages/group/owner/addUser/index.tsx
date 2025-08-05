@@ -107,6 +107,7 @@ export default function AddUserToGroup() {
         switch (response.status) {
           case 401:
             toastWarn(`Session expired: ${result.error}`);
+            router.push("/user/login");
             break;
           case 403:
             toastWarn(`Permission denied`);

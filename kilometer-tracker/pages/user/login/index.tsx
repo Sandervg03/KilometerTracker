@@ -3,6 +3,7 @@ import styles from "../../../styles/Home.module.css";
 import { useState } from "react";
 import { toastWarn } from "../../components/toast_messages/toast_warn";
 import { toastError } from "../../components/toast_messages/toast_error";
+import Link from "next/link";
 
 export default function Login() {
   const router = useRouter();
@@ -41,7 +42,7 @@ export default function Login() {
       setIsLoading(false);
 
       if (response.ok) {
-        router.push("/group/overview");
+        router.push("/group/user/overview");
       } else {
         switch (response.status) {
           case 401:
@@ -90,6 +91,7 @@ export default function Login() {
               />
               <button type="submit">Login</button>
             </form>
+            <h3>Don't have an account? <Link href="/user/register">Register</Link></h3>
           </>
         )}
       </div>

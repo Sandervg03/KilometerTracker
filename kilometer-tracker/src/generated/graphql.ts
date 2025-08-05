@@ -1601,7 +1601,7 @@ export type InsertGroupMutationVariables = Exact<{
 }>;
 
 
-export type InsertGroupMutation = { __typename?: 'mutation_root', insert_group?: { __typename?: 'group_mutation_response', affected_rows: number } | null };
+export type InsertGroupMutation = { __typename?: 'mutation_root', insert_group?: { __typename?: 'group_mutation_response', affected_rows: number } | null, insert_group_users?: { __typename?: 'group_users_mutation_response', affected_rows: number } | null };
 
 export type InsertGroupUserMutationVariables = Exact<{
   groupId?: InputMaybe<Scalars['uuid']['input']>;
@@ -1646,6 +1646,13 @@ export type GroupByIdQueryVariables = Exact<{
 
 
 export type GroupByIdQuery = { __typename?: 'query_root', group: Array<{ __typename?: 'group', id: string, name?: string | null, owner: string }> };
+
+export type GroupsByUserEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type GroupsByUserEmailQuery = { __typename?: 'query_root', group_users: Array<{ __typename?: 'group_users', email: string, group: string }> };
 
 export type QueryPasswordByEmailQueryVariables = Exact<{
   email: Scalars['String']['input'];

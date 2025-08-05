@@ -1,6 +1,6 @@
-import { Group_Mutation_Response, Group_Users_Mutation_Response, GroupByIdQuery, GroupByIdQueryVariables, InsertGroupMutationVariables, InsertGroupUserMutationVariables } from "../../../src/generated/graphql";
-import { adminClient } from "../../../src/graphql/client";
-import { GROUP_BY_ID, INSERT_GROUP, INSERT_GROUP_USER } from "../../../src/graphql/operations";
+import { Group_Mutation_Response, Group_Users_Mutation_Response, GroupByIdQuery, GroupByIdQueryVariables, GroupsByUserEmailQuery, InsertGroupMutationVariables, InsertGroupUserMutationVariables } from "../../../src/generated/graphql";
+import { adminClient, userClient } from "../../../src/graphql/client";
+import { GROUP_BY_ID, GROUPS_BY_USER_EMAIL, INSERT_GROUP, INSERT_GROUP_USER } from "../../../src/graphql/operations";
 
 export class Group {
     private _id: string;
@@ -68,7 +68,16 @@ export class Group {
             const group = result.group[0];
             return new Group(group.owner, group.id, group.name);
         } else {
-            throw new Error("Group not found.");
+            throw new Error("No group found.");
         }
+    }
+
+    static async getAllByUserToken(token: string, email: string): Promise<Group[]> {
+        const result: GroupsByUserEmailQuery = await userClient(token).request<GroupsByUserEmailQuery>(GROUPS_BY_USER_EMAIL, { email });
+        if (result.group_users.length > 0) {
+            const groupIds: string[] = result.group_users.map(groupUser => groupUser.group);
+            return await Promise.all(groupIds.map(async id => await Group.getById(id)));
+        }
+        throw new Error("No group found.");
     }
 }

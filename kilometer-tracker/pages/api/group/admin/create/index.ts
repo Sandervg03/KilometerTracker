@@ -1,9 +1,10 @@
+import { NextApiRequest, NextApiResponse } from "next";
 import { handleApiError } from "../../../../../src/utils/errorHandler";
 import { JWTService } from "../../../../../src/utils/jwtService";
 import { Group } from "../../../models/group";
 import { User } from "../../../models/user";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "POST") {
         res.setHeader("Allow", ["POST"]);
         return res.status(405).json({

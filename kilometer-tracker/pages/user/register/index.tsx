@@ -3,6 +3,7 @@ import styles from "../../../styles/Home.module.css";
 import { useRouter } from "next/router";
 import { toastWarn } from "../../components/toast_messages/toast_warn";
 import { toastError } from "../../components/toast_messages/toast_error";
+import Link from "next/link";
 
 export default function Register() {
   const router = useRouter();
@@ -119,6 +120,7 @@ export default function Register() {
               />
               <button type="submit">Register</button>
             </form>
+            <h3>Already have an account? <Link href="/user/login">Login</Link></h3>
           </>
         )}
       </div>

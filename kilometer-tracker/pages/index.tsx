@@ -5,10 +5,6 @@ import Link from "next/link";
 export default function Home() {
   const router = useRouter();
 
-  const handleRegisterClick = () => {
-    router.query.register = "true";
-  }
-
   return (
     <main className={styles.main}>
       <div className={styles.container}>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../../../styles/Home.module.css";
 import { useRouter } from "next/router";
 import { toastWarn } from "../../../components/toast_messages/toast_warn";
@@ -7,6 +7,32 @@ import { toastSuccess } from "../../../components/toast_messages/toast_success";
 
 export default function GroupCreate() {
   const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function confirmAdmin() {
+      const response = await fetch("/api/user/role/admin", {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        const result = await response.json();
+        switch (response.status) {
+          case 403:
+            toastWarn(`Permission denied: ${result.error}`);
+            router.push("/user/login");
+            break;
+          default:
+            toastWarn(`Error: ${result.error}`);
+            router.push("/user/login");
+        }
+        return;
+      }
+    }
+
+    confirmAdmin().then(() => setIsLoading(false));
+  }, []);
 
   const [formData, setFormData] = useState({
     ownerEmail: "",
@@ -64,8 +90,6 @@ export default function GroupCreate() {
       toastError("Network error. Please check your connection and try again.");
     }
   };
-
-  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <main className={styles.main}>

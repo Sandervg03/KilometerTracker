@@ -12,4 +12,12 @@ mutation InsertGroup(
   ) {
     affected_rows
   }
+
+  insert_group_users(
+    objects: [
+      { group: $id, email: $owner }
+    ]
+  ) {
+    affected_rows
+  }
 }

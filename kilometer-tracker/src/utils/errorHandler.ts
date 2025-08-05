@@ -78,6 +78,15 @@ export function handleApiError(error: any, res: NextApiResponse): void {
         })
     }
 
+    // Group not found
+    if (error.message?.includes("No group found.")) {
+        return res.status(404).json({
+            message: "Not found",
+            error: "No group found"
+        });
+    }
+
+    console.log(error);
     // Default error
     return res.status(500).json({
         message: "Internal server error",
