@@ -10,6 +10,14 @@ export function handleApiError(error: any, res: NextApiResponse): void {
         });
     }
 
+    // Forbidden
+    if (error.message?.includes("Forbidden")) {
+        return res.status(403).json({
+            message: "Forbidden",
+            error: "You are not allowed to perform this action."
+        })
+    }
+
     // Email already exists
     if (error.message?.includes("user_pkey") ||
         error.message?.includes("duplicate key") ||

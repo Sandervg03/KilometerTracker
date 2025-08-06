@@ -16,13 +16,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         JWTService.verifyToken(req.cookies.token);
 
         const { groupId, userEmail } = req.body;
-        if ((await Group.getById(groupId)).owner !== JWTService.getEmailFromToken(req.cookies.token)) {
+        const group = await Group.getById(groupId);
+
+        if (group.owner !== JWTService.getEmailFromToken(req.cookies.token)) {
             return res.status(403).json({
                 message: "You are not the owner of this group."
             });
         }
         const userToAdd = await User.getByEmail(userEmail);
-        await Group.addUser(groupId, userToAdd.email);
+        await group.addUser(userToAdd.email);
 
         res.status(201).json({
             message: "User added to group successfully",

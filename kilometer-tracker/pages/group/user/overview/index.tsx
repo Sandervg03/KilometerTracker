@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "../../../../styles/Home.module.css";
 import { useRouter } from "next/router";
 import { toastWarn } from "../../../components/toast_messages/toast_warn";
 import { toastError } from "../../../components/toast_messages/toast_error";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Overview() {
     const [isLoading, setIsLoading] = useState(true);
     const [groups, setGroups] = useState([]);
+    const [openMenu, setOpenMenu] = useState<string | null>(null);
+    const menuRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
     const router = useRouter();
 
@@ -49,6 +52,23 @@ export default function Overview() {
         fetchGroups().then(() => setIsLoading(false));
     }, []);
 
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (openMenu && menuRefs.current[openMenu] && !menuRefs.current[openMenu]!.contains(event.target as Node)) {
+                setOpenMenu(null);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [openMenu]);
+
+    const handleOptionsClick = (groupId: string) => {
+        setOpenMenu(prev => (prev === groupId ? null : groupId));
+    };
+
     return (
         <main className={styles.main}>
             <div className={styles.container}>
@@ -59,13 +79,31 @@ export default function Overview() {
                         {groups.length === 0 ? (
                             <p>No groups found.</p>
                         ) : (
-                            <ul>
+                            <div className={styles.list}>
                                 {groups.map((group) => (
-                                    <li key={group._id}>
+                                    <div className={styles.listItem} key={group._id} ref={el => { menuRefs.current[group._id] = el; }}>
                                         <Link href={`/group/user/overview/${group._id}`}>{group._name}</Link>
-                                    </li>
+                                        {group._owner === localStorage.getItem("email") && (
+                                            <>
+                                                <Image
+                                                    src="/media/img/more.png"
+                                                    alt="More options"
+                                                    width={25}
+                                                    height={10}
+                                                    style={{ filter: "invert(100%)", cursor: "pointer" }}
+                                                    onClick={() => handleOptionsClick(group._id)}
+                                                />
+                                                {openMenu === group._id && (
+                                                    <div className={styles.dropdownMenu}>
+                                                        <Link href={`/group/owner/addUser/${group._id}`} className={styles.dropdownItem}>Add user</Link>
+                                                        <Link href={`/group/owner/renameGroup/${group._id}`} className={styles.dropdownItem}>Rename group</Link>
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
                                 ))}
-                            </ul>
+                            </div>
                         )}
                     </>
                 )}

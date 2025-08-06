@@ -1,6 +1,7 @@
-import { Group_Mutation_Response, Group_Users_Mutation_Response, GroupByIdQuery, GroupByIdQueryVariables, GroupsByUserEmailQuery, InsertGroupMutationVariables, InsertGroupUserMutationVariables } from "../../../src/generated/graphql";
+import { Group_Mutation_Response, Group_Users_Mutation_Response, GroupByIdQuery, GroupByIdQueryVariables, GroupsByUserEmailQuery, GroupUsersByGroupIdQuery, GroupUsersByGroupIdQueryVariables, InsertGroupMutationVariables, InsertGroupUserMutationVariables, RenameGroupMutation, RenameGroupMutationVariables } from "../../../src/generated/graphql";
 import { adminClient, userClient } from "../../../src/graphql/client";
-import { GROUP_BY_ID, GROUPS_BY_USER_EMAIL, INSERT_GROUP, INSERT_GROUP_USER } from "../../../src/graphql/operations";
+import { GROUP_BY_ID, GROUP_USERS_BY_GROUP_ID, GROUPS_BY_USER_EMAIL, INSERT_GROUP, INSERT_GROUP_USER, RENAME_GROUP } from "../../../src/graphql/operations";
+import { User } from "./user";
 
 export class Group {
     private _id: string;
@@ -54,12 +55,29 @@ export class Group {
         return await adminClient.request<Group_Mutation_Response, InsertGroupMutationVariables>(INSERT_GROUP, variables);
     }
 
-    static async addUser(groupId: string, userEmail: string): Promise<Group_Users_Mutation_Response> {
+    async rename(name: string, token: string): Promise<Group_Mutation_Response> {
+        const variables: RenameGroupMutationVariables = {
+            id: this.id,
+            name: name
+        }
+        return await userClient(token).request<Group_Mutation_Response, RenameGroupMutationVariables>(RENAME_GROUP, variables);
+    }
+
+    async addUser(userEmail: string): Promise<Group_Users_Mutation_Response> {
         const variables = {
-            groupId: groupId,
+            groupId: this.id,
             userEmail: userEmail
         };
         return await adminClient.request<Group_Users_Mutation_Response, InsertGroupUserMutationVariables>(INSERT_GROUP_USER, variables);
+    }
+
+    async getUsers() {
+        const result: GroupUsersByGroupIdQuery = await adminClient.request<GroupUsersByGroupIdQuery, GroupUsersByGroupIdQueryVariables>(GROUP_USERS_BY_GROUP_ID, { groupId: this.id });
+        if (result.group_users.length > 0) {
+            return await Promise.all(result.group_users.map(async user => await User.getByEmail(user.email)));
+        } else {
+            throw new Error("No user found.");
+        }
     }
 
     static async getById(id: string): Promise<Group> {

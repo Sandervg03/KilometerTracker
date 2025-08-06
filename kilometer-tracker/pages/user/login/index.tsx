@@ -42,6 +42,7 @@ export default function Login() {
       setIsLoading(false);
 
       if (response.ok) {
+        localStorage.setItem("email", formData.email);
         router.push("/group/user/overview");
       } else {
         switch (response.status) {

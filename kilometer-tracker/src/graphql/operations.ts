@@ -79,6 +79,17 @@ export const REGISTER_USER_WITH_PASSWORD = `mutation RegisterUserWithPassword(
   }
 }`;
 
+export const RENAME_GROUP = `mutation RenameGroup($id: uuid!, $name: String!) {
+  update_group(where: {id: {_eq: $id}}, _set: {name: $name}) {
+    returning {
+      id
+      name
+      owner
+    }
+    affected_rows
+  }
+}`;
+
 export const INSERT_USER = `mutation InsertUser(
   $email: String!
   $firstName: String!
@@ -109,6 +120,13 @@ export const GROUP_BY_ID = `query GroupById($id: uuid!) {
 
 export const GROUPS_BY_USER_EMAIL = `query GroupsByUserEmail($email: String!) {
   group_users(where: {email: {_eq: $email}}) {
+    email
+    group
+  }
+}`;
+
+export const GROUP_USERS_BY_GROUP_ID = `query GroupUsersByGroupId($groupId: uuid!) {
+  group_users(where: {group: {_eq: $groupId}}) {
     email
     group
   }

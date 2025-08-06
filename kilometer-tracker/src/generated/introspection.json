@@ -3579,14 +3579,14 @@
             "description": "delete single row from the table: \"trips\"",
             "args": [
               {
-                "name": "email",
+                "name": "current_mileage",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "Int",
                     "ofType": null
                   }
                 },
@@ -3595,14 +3595,14 @@
                 "deprecationReason": null
               },
               {
-                "name": "start",
+                "name": "email",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -6481,14 +6481,14 @@
             "description": "fetch data from the table: \"trips\" using primary key columns",
             "args": [
               {
-                "name": "email",
+                "name": "current_mileage",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "Int",
                     "ofType": null
                   }
                 },
@@ -6497,14 +6497,14 @@
                 "deprecationReason": null
               },
               {
-                "name": "start",
+                "name": "email",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -7859,14 +7859,14 @@
             "description": "fetch data from the table: \"trips\" using primary key columns",
             "args": [
               {
-                "name": "email",
+                "name": "current_mileage",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "Int",
                     "ofType": null
                   }
                 },
@@ -7875,14 +7875,14 @@
                 "deprecationReason": null
               },
               {
-                "name": "start",
+                "name": "email",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "Int",
+                    "name": "String",
                     "ofType": null
                   }
                 },
@@ -8281,6 +8281,22 @@
         "isOneOf": null,
         "fields": [
           {
+            "name": "current_mileage",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "email",
             "description": null,
             "args": [],
@@ -8290,22 +8306,6 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "end",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
                 "ofType": null
               }
             },
@@ -8334,22 +8334,6 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "uuid",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
                 "ofType": null
               }
             },
@@ -8598,19 +8582,7 @@
         "isOneOf": null,
         "fields": [
           {
-            "name": "end",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
+            "name": "current_mileage",
             "description": null,
             "args": [],
             "type": {
@@ -8687,11 +8659,11 @@
             "deprecationReason": null
           },
           {
-            "name": "email",
+            "name": "current_mileage",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "String_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -8699,11 +8671,11 @@
             "deprecationReason": null
           },
           {
-            "name": "end",
+            "name": "email",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "Int_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null,
@@ -8733,18 +8705,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "start",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "Int_comparison_exp",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -8762,7 +8722,7 @@
         "enumValues": [
           {
             "name": "trips_pkey",
-            "description": "unique or primary key constraint on columns \"email\", \"start\"",
+            "description": "unique or primary key constraint on columns \"email\", \"current_mileage\"",
             "isDeprecated": false,
             "deprecationReason": null
           }
@@ -8777,19 +8737,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "end",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
+            "name": "current_mileage",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -8813,11 +8761,11 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "email",
+            "name": "current_mileage",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -8825,11 +8773,11 @@
             "deprecationReason": null
           },
           {
-            "name": "end",
+            "name": "email",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -8859,18 +8807,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "start",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -8884,6 +8820,18 @@
         "isOneOf": null,
         "fields": [
           {
+            "name": "current_mileage",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "email",
             "description": null,
             "args": [],
@@ -8896,36 +8844,12 @@
             "deprecationReason": null
           },
           {
-            "name": "end",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "group",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -8944,6 +8868,18 @@
         "isOneOf": null,
         "fields": [
           {
+            "name": "current_mileage",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "email",
             "description": null,
             "args": [],
@@ -8956,36 +8892,12 @@
             "deprecationReason": null
           },
           {
-            "name": "end",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "group",
             "description": null,
             "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -9121,7 +9033,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "email",
+            "name": "current_mileage",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -9133,7 +9045,7 @@
             "deprecationReason": null
           },
           {
-            "name": "end",
+            "name": "email",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -9158,18 +9070,6 @@
           },
           {
             "name": "group",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -9193,14 +9093,14 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "email",
+            "name": "current_mileage",
             "description": null,
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "Int",
                 "ofType": null
               }
             },
@@ -9209,14 +9109,14 @@
             "deprecationReason": null
           },
           {
-            "name": "start",
+            "name": "email",
             "description": null,
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Int",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -9239,13 +9139,13 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "email",
+            "name": "current_mileage",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "end",
+            "name": "email",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -9261,12 +9161,6 @@
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "start",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -9279,11 +9173,11 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "email",
+            "name": "current_mileage",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -9291,11 +9185,11 @@
             "deprecationReason": null
           },
           {
-            "name": "end",
+            "name": "email",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -9325,18 +9219,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "start",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -9350,19 +9232,7 @@
         "isOneOf": null,
         "fields": [
           {
-            "name": "end",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
+            "name": "current_mileage",
             "description": null,
             "args": [],
             "type": {
@@ -9386,19 +9256,7 @@
         "isOneOf": null,
         "fields": [
           {
-            "name": "end",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
+            "name": "current_mileage",
             "description": null,
             "args": [],
             "type": {
@@ -9422,19 +9280,7 @@
         "isOneOf": null,
         "fields": [
           {
-            "name": "end",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
+            "name": "current_mileage",
             "description": null,
             "args": [],
             "type": {
@@ -9499,11 +9345,11 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "email",
+            "name": "current_mileage",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -9511,11 +9357,11 @@
             "deprecationReason": null
           },
           {
-            "name": "end",
+            "name": "email",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -9545,18 +9391,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "start",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -9570,19 +9404,7 @@
         "isOneOf": null,
         "fields": [
           {
-            "name": "end",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
+            "name": "current_mileage",
             "description": null,
             "args": [],
             "type": {
@@ -9609,13 +9431,13 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "email",
+            "name": "current_mileage",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "end",
+            "name": "email",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -9628,12 +9450,6 @@
           },
           {
             "name": "group",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -9700,19 +9516,7 @@
         "isOneOf": null,
         "fields": [
           {
-            "name": "end",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
+            "name": "current_mileage",
             "description": null,
             "args": [],
             "type": {
@@ -9736,19 +9540,7 @@
         "isOneOf": null,
         "fields": [
           {
-            "name": "end",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
+            "name": "current_mileage",
             "description": null,
             "args": [],
             "type": {
@@ -9772,19 +9564,7 @@
         "isOneOf": null,
         "fields": [
           {
-            "name": "end",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "start",
+            "name": "current_mileage",
             "description": null,
             "args": [],
             "type": {
