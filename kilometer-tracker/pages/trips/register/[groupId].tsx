@@ -1,15 +1,15 @@
 import { useRouter } from "next/router";
-import styles from "../../../../styles/Home.module.css";
+import styles from "../../../styles/Home.module.css";
 import { useEffect, useState } from "react";
-import { toastWarn } from "../../../components/toast_messages/toast_warn";
-import { toastError } from "../../../components/toast_messages/toast_error";
+import { toastWarn } from "../../components/toast_messages/toast_warn";
+import { toastError } from "../../components/toast_messages/toast_error";
 import Link from "next/link";
 
-export default function GroupOverview() {
+export default function RegisterTrip() {
     const router = useRouter();
     const { groupId } = router.query;
 
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [group, setGroup] = useState(null);
     const [groupUsers, setGroupUsers] = useState([]);
@@ -17,7 +17,8 @@ export default function GroupOverview() {
     useEffect(() => {
         if (!groupId) {
             toastWarn("Group ID is missing");
-            router.push("/group/user/overview");
+            console.log(groupId)
+            // router.push("/group/user/overview");
             return;
         }
         async function getData() {
@@ -54,26 +55,40 @@ export default function GroupOverview() {
             }
         }
 
-        getData().then(() => setLoading(false));
+        getData().then(() => setIsLoading(false));
     }, [])
+
+    const handleSubmit = async () => {
+
+    }
 
     return (
         <main className={styles.main}>
             <div className={styles.container}>
-                {loading && <p>Loading...</p>}
-                {!loading && (
+                {isLoading && <p>Loading...</p>}
+                {!isLoading && (
                     <>
                         <Link href="/group/user/overview" style={{ position: "absolute", top: 20, left: 20 }}>
                             Go to groups overview
                         </Link>
-                        <h1 className={styles.title}>Group Overview</h1>
-                        <p className={styles.description}>Users in group: {group._name}</p>
-                        {groupUsers.map(user => (
-                            <ul>
-                                {user._firstName + ' ' + user._lastName}
-                            </ul>
-                        ))}
-                        <Link href={`/trips/register/${group._id}`}>Register a trip!</Link>
+                        <h1>Register your trip.</h1>
+                        <h3>Enter your current mileage below.</h3>
+                        <form onSubmit={handleSubmit}>
+                            <input type="number" required />
+                            <select required>
+                                {groupUsers.map(user => (
+                                    <>
+                                        {user._email === localStorage.getItem("email") &&
+                                            <option value={user._firstName + ' ' + user._lastName} defaultChecked>{user._firstName + ' ' + user._lastName}</option>
+                                        }
+                                        {user._email !== localStorage.getItem("email") &&
+                                            <option value={user._firstName + ' ' + user._lastName}>{user._firstName + ' ' + user._lastName}</option>
+                                        }
+                                    </>
+                                ))}
+                            </select>
+                            <button type="submit">Register current mileage</button>
+                        </form>
                     </>
                 )}
             </div>
