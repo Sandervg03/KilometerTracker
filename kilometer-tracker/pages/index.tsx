@@ -3,8 +3,6 @@ import styles from "../styles/Home.module.css";
 import Link from "next/link";
 
 export default function Home() {
-  const router = useRouter();
-
   return (
     <main className={styles.main}>
       <div className={styles.container}>

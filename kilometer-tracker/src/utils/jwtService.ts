@@ -1,15 +1,16 @@
 import * as jwt from 'jsonwebtoken';
+import { Group } from '../../pages/api/models/group';
 
 export interface HasuraClaims {
     'x-hasura-default-role': string;
     'x-hasura-allowed-roles': string[];
     'x-hasura-user-email': string;
-    'x-hasura-user-id'?: string;
 }
 
 export interface JWTPayload {
     email: string;
     userId?: string;
+    groups: string[];
     'https://hasura.io/jwt/claims': HasuraClaims;
 }
 
@@ -28,6 +29,7 @@ export class JWTService {
      */
     static generateToken(
         email: string,
+        groups: string[] = [],
         role: string = 'user',
         expiresIn: string | number = this.DEFAULT_EXPIRES_IN
     ): string {
@@ -36,8 +38,9 @@ export class JWTService {
             'https://hasura.io/jwt/claims': {
                 'x-hasura-default-role': role,
                 'x-hasura-allowed-roles': [role],
-                'x-hasura-user-email': email
-            }
+                'x-hasura-user-email': email,
+            },
+            groups
         };
 
         return jwt.sign(payload, this.JWT_SECRET, {
@@ -112,10 +115,11 @@ export class JWTService {
     /**
      * Refresh token (generate new token with same claims but extended expiry)
      */
-    static refreshToken(token: string, expiresIn: string = this.DEFAULT_EXPIRES_IN): string {
+    static async refreshToken(token: string, expiresIn: string = this.DEFAULT_EXPIRES_IN): Promise<string> {
         try {
             const decoded = this.verifyToken(token);
-            return this.generateToken(decoded.email,
+            const groups = await Group.getAllByEmail(decoded.email);
+            return this.generateToken(decoded.email, groups,
                 decoded['https://hasura.io/jwt/claims']['x-hasura-default-role'], expiresIn);
         } catch (error) {
             throw new Error('Cannot refresh invalid token');

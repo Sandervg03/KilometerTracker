@@ -1,16 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Group } from "../../../models/group";
-import { JWTService } from "../../../../../src/utils/jwtService";
-import { handleApiError } from "../../../../../src/utils/errorHandler";
+import { Group } from "../../models/group";
+import { JWTService } from "../../../../src/utils/jwtService";
+import { handleApiError } from "../../../../src/utils/errorHandler";
+import { AuthorizedMethod } from "../../middleware";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "PUT") {
         res.status(405).json({ error: "Method not allowed." })
     }
 
     try {
-        JWTService.verifyToken(req.cookies.token);
-
         const { name, groupId } = req.body;
         const group = await Group.getById(groupId);
 
@@ -25,3 +24,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         handleApiError(error, res);
     }
 }
+
+export default AuthorizedMethod(handler);

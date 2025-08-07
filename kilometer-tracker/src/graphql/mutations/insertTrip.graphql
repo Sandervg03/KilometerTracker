@@ -1,0 +1,19 @@
+mutation InsertTrip(
+    $currentMileage: Int!
+    $filledTank: Boolean!
+  	$email: String!
+  	$group: uuid!
+) {
+  insert_trips(
+    objects: [
+        { 
+            current_mileage: $currentMileage
+            filled_tank: $filledTank
+          	email: $email
+          	group: $group
+        }
+    ]
+  ) {
+    affected_rows
+  }
+}

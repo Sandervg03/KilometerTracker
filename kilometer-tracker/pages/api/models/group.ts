@@ -98,4 +98,12 @@ export class Group {
         }
         throw new Error("No group found.");
     }
+
+    static async getAllByEmail(email: string): Promise<string[]> {
+        const result: GroupsByUserEmailQuery = await adminClient.request<GroupsByUserEmailQuery>(GROUPS_BY_USER_EMAIL, { email });
+        if (result.group_users.length > 0) {
+            return result.group_users.map(groupUser => groupUser.group);
+        }
+        throw new Error("No group found.");
+    }
 }

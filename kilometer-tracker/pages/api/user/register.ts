@@ -1,6 +1,6 @@
-import { User } from "../../models/user";
+import { User } from "../models/user";
 import { NextApiRequest, NextApiResponse } from "next";
-import { handleApiError } from "../../../../src/utils/errorHandler";
+import { handleApiError } from "../../../src/utils/errorHandler";
 import * as bcrypt from 'bcrypt';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

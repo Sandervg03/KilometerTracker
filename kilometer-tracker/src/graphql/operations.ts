@@ -38,6 +38,26 @@ export const INSERT_GROUP_USER = `mutation InsertGroupUser($groupId: uuid, $user
   }
 }`;
 
+export const INSERT_TRIP = `mutation InsertTrip(
+    $currentMileage: Int!
+    $filledTank: Boolean!
+  	$email: String!
+  	$group: uuid!
+) {
+  insert_trips(
+    objects: [
+        { 
+            current_mileage: $currentMileage
+            filled_tank: $filledTank
+          	email: $email
+          	group: $group
+        }
+    ]
+  ) {
+    affected_rows
+  }
+}`;
+
 export const INSERT_PASSWORD = `mutation InsertPassword(
   $email: String!
   $password: String!
@@ -136,6 +156,15 @@ export const QUERY_PASSWORD_BY_EMAIL = `query QueryPasswordByEmail($email: Strin
   password(where: { email: { _eq: $email } }) {
     email
     password
+  }
+}`;
+
+export const TRIPS_BY_GROUP = `query TripsByGroup($group: uuid!) {
+  trips(where: {group: {_eq: $group}}) {
+    current_mileage
+    email
+    filled_tank
+    group
   }
 }`;
 

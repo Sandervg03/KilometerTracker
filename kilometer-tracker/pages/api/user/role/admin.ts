@@ -1,16 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { handleApiError } from "../../../../../src/utils/errorHandler";
-import { JWTService } from "../../../../../src/utils/jwtService";
+import { handleApiError } from "../../../../src/utils/errorHandler";
+import { JWTService } from "../../../../src/utils/jwtService";
+import { AuthorizedMethod } from "../../middleware";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "POST") {
         res.setHeader("Allow", ["POST"]);
         return res.status(405).json({ error: `Method ${req.method} not allowed` });
     }
 
     try {
-        JWTService.verifyToken(req.cookies.token);
-
         if (JWTService.getEmailFromToken(req.cookies.token) !== process.env.ADMIN_EMAIL) {
             return res.status(403).json({ error: "Not authorized." });
         }
@@ -20,3 +19,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         handleApiError(error, res);
     }
 }
+
+export default AuthorizedMethod(handler);

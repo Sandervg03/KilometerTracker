@@ -1,10 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { handleApiError } from "../../../../../src/utils/errorHandler";
-import { JWTService } from "../../../../../src/utils/jwtService";
-import { Group } from "../../../models/group";
-import { User } from "../../../models/user";
+import { handleApiError } from "../../../../src/utils/errorHandler";
+import { JWTService } from "../../../../src/utils/jwtService";
+import { Group } from "../../models/group";
+import { User } from "../../models/user";
+import { AuthorizedMethod } from "../../middleware";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "POST") {
         res.setHeader("Allow", ["POST"]);
         return res.status(405).json({
@@ -13,8 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-        JWTService.verifyToken(req.cookies.token);
-
         if (JWTService.getEmailFromToken(req.cookies.token) !== process.env.ADMIN_EMAIL) {
             return res.status(403).json({
                 message: "Only admins may create groups."
@@ -40,3 +39,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         handleApiError(error, res);
     }
 }
+
+export default AuthorizedMethod(handler);

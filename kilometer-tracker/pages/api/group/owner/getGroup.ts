@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { handleApiError } from "../../../../../src/utils/errorHandler";
-import { Group } from "../../../models/group";
-import { JWTService } from "../../../../../src/utils/jwtService";
+import { handleApiError } from "../../../../src/utils/errorHandler";
+import { Group } from "../../models/group";
+import { JWTService } from "../../../../src/utils/jwtService";
+import { AuthorizedMethod } from "../../middleware";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "GET") {
         res.setHeader("Allow", ["GET"]);
         return res.status(405).json({
@@ -12,9 +13,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-        JWTService.verifyToken(req.cookies.token);
-        const email = JWTService.getEmailFromToken(req.cookies.token);
-
         const groupId = req.query.groupId as string;
 
         if (!groupId) {
@@ -23,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const group = await Group.getById(groupId);
 
-        if (group.owner !== email) {
+        if (group.owner !== JWTService.getEmailFromToken(req.cookies.token)) {
             return res.status(403).json({
                 error: "You are not the owner of this group."
             });
@@ -37,3 +35,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         handleApiError(error, res);
     }
 }
+
+export default AuthorizedMethod(handler);

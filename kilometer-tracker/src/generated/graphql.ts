@@ -499,7 +499,7 @@ export type Mutation_RootDelete_TripsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Trips_By_PkArgs = {
   current_mileage: Scalars['Int']['input'];
-  email: Scalars['String']['input'];
+  group: Scalars['uuid']['input'];
 };
 
 
@@ -961,7 +961,7 @@ export type Query_RootTrips_AggregateArgs = {
 
 export type Query_RootTrips_By_PkArgs = {
   current_mileage: Scalars['Int']['input'];
-  email: Scalars['String']['input'];
+  group: Scalars['uuid']['input'];
 };
 
 
@@ -1143,7 +1143,7 @@ export type Subscription_RootTrips_AggregateArgs = {
 
 export type Subscription_RootTrips_By_PkArgs = {
   current_mileage: Scalars['Int']['input'];
-  email: Scalars['String']['input'];
+  group: Scalars['uuid']['input'];
 };
 
 
@@ -1188,7 +1188,7 @@ export type Trips = {
   __typename?: 'trips';
   current_mileage: Scalars['Int']['output'];
   email: Scalars['String']['output'];
-  filled_tank?: Maybe<Scalars['Boolean']['output']>;
+  filled_tank: Scalars['Boolean']['output'];
   group: Scalars['uuid']['output'];
 };
 
@@ -1241,7 +1241,7 @@ export type Trips_Bool_Exp = {
 
 /** unique or primary key constraints on table "trips" */
 export enum Trips_Constraint {
-  /** unique or primary key constraint on columns "email", "current_mileage" */
+  /** unique or primary key constraint on columns "current_mileage", "group" */
   TripsPkey = 'trips_pkey'
 }
 
@@ -1301,7 +1301,7 @@ export type Trips_Order_By = {
 /** primary key columns input for table: trips */
 export type Trips_Pk_Columns_Input = {
   current_mileage: Scalars['Int']['input'];
-  email: Scalars['String']['input'];
+  group: Scalars['uuid']['input'];
 };
 
 /** select columns of table "trips" */
@@ -1590,6 +1590,16 @@ export type InsertGroupUserMutationVariables = Exact<{
 
 export type InsertGroupUserMutation = { __typename?: 'mutation_root', insert_group_users?: { __typename?: 'group_users_mutation_response', affected_rows: number } | null };
 
+export type InsertTripMutationVariables = Exact<{
+  currentMileage: Scalars['Int']['input'];
+  filledTank: Scalars['Boolean']['input'];
+  email: Scalars['String']['input'];
+  group: Scalars['uuid']['input'];
+}>;
+
+
+export type InsertTripMutation = { __typename?: 'mutation_root', insert_trips?: { __typename?: 'trips_mutation_response', affected_rows: number } | null };
+
 export type InsertPasswordMutationVariables = Exact<{
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -1654,6 +1664,13 @@ export type QueryPasswordByEmailQueryVariables = Exact<{
 
 
 export type QueryPasswordByEmailQuery = { __typename?: 'query_root', password: Array<{ __typename?: 'password', email: string, password: string }> };
+
+export type TripsByGroupQueryVariables = Exact<{
+  group: Scalars['uuid']['input'];
+}>;
+
+
+export type TripsByGroupQuery = { __typename?: 'query_root', trips: Array<{ __typename?: 'trips', current_mileage: number, email: string, filled_tank: boolean, group: string }> };
 
 export type QueryUserByEmailQueryVariables = Exact<{
   email: Scalars['String']['input'];

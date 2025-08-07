@@ -19,7 +19,7 @@ export function handleApiError(error: any, res: NextApiResponse): void {
     }
 
     // Email already exists
-    if (error.message?.includes("user_pkey") ||
+    if (error.message?.includes('user_pkey') ||
         error.message?.includes("duplicate key") ||
         error.message?.includes("unique constraint")) {
         return res.status(409).json({

@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Group } from "../../../models/group";
-import { handleApiError } from "../../../../../src/utils/errorHandler";
+import { Group } from "../../models/group";
+import { handleApiError } from "../../../../src/utils/errorHandler";
+import { AuthorizedMethod } from "../../middleware";
 
-export default async function handler(req: NextApiRequest,res: NextApiResponse) {
+async function handler(req: NextApiRequest,res: NextApiResponse) {
     if (req.method !== 'GET') {
         return res.status(405).json({ message: 'Method Not Allowed' });
     }
@@ -18,3 +19,5 @@ export default async function handler(req: NextApiRequest,res: NextApiResponse) 
         handleApiError(error, res);
     }
 }
+
+export default AuthorizedMethod(handler);

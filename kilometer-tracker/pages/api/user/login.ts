@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { handleApiError } from "../../../../src/utils/errorHandler";
+import { handleApiError } from "../../../src/utils/errorHandler";
 import * as bcrypt from 'bcrypt';
-import { User } from "../../models/user";
-import { QueryPasswordByEmailQuery } from "../../../../src/generated/graphql";
-import { JWTService } from "../../../../src/utils/jwtService";
+import { User } from "../models/user";
+import { QueryPasswordByEmailQuery } from "../../../src/generated/graphql";
+import { JWTService } from "../../../src/utils/jwtService";
+import { Group } from "../models/group";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "POST") {
@@ -15,6 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
         const { email, password } = req.body;
+        console.log(req.body)
 
         const userPasswordQueryResult: QueryPasswordByEmailQuery = await User.getPasswordByEmail(email);
 
@@ -22,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             throw new Error("Incorrect credentials");
         }
 
-        const token = JWTService.generateToken(email);
+        const token = JWTService.generateToken(email, await Group.getAllByEmail(email));
 
         const cookieString = JWTService.generateCookieString(token);
         res.setHeader("Set-Cookie", cookieString);
@@ -33,6 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
     } catch (error) {
+        console.log(error);
         handleApiError(error, res);
     }
 }

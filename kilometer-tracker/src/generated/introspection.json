@@ -3595,14 +3595,14 @@
                 "deprecationReason": null
               },
               {
-                "name": "email",
+                "name": "group",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "uuid",
                     "ofType": null
                   }
                 },
@@ -6497,14 +6497,14 @@
                 "deprecationReason": null
               },
               {
-                "name": "email",
+                "name": "group",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "uuid",
                     "ofType": null
                   }
                 },
@@ -7875,14 +7875,14 @@
                 "deprecationReason": null
               },
               {
-                "name": "email",
+                "name": "group",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "String",
+                    "name": "uuid",
                     "ofType": null
                   }
                 },
@@ -8317,9 +8317,13 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -8722,7 +8726,7 @@
         "enumValues": [
           {
             "name": "trips_pkey",
-            "description": "unique or primary key constraint on columns \"email\", \"current_mileage\"",
+            "description": "unique or primary key constraint on columns \"current_mileage\", \"group\"",
             "isDeprecated": false,
             "deprecationReason": null
           }
@@ -9109,14 +9113,14 @@
             "deprecationReason": null
           },
           {
-            "name": "email",
+            "name": "group",
             "description": null,
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "uuid",
                 "ofType": null
               }
             },
