@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+temporal/lib
+
 # next.js
 /.next/
 /out/

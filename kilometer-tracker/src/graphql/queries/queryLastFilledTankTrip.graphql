@@ -1,0 +1,13 @@
+query LastFilledTankTrip($group: uuid!) {
+  trips(
+    where: { group: { _eq: $group }, filled_tank: { _eq: true } }
+    order_by: { current_mileage: desc }
+    limit: 1
+  ) {
+    current_mileage
+    email
+    filled_tank
+    group
+    cost
+  }
+}

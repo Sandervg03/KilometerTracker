@@ -10,14 +10,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     try {
-        const { currentMileage, email, groupId, filledTank } = req.body;
+        const { currentMileage, email, groupId, filledTank, cost } = req.body;
 
         const decodedToken = JWTService.decodeToken(req.cookies.token);
         if (!decodedToken.groups.includes(groupId)) {
             throw new Error("Forbidden");
         }
 
-        const trip = new Trip(currentMileage, email, groupId, filledTank);
+        const trip = new Trip(currentMileage, email, groupId, filledTank, cost);
         await trip.save(req.cookies.token);
 
         res.status(201).json({ message: "Trip registered succesfully." });

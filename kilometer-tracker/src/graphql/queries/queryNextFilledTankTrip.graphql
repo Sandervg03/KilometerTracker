@@ -1,0 +1,17 @@
+query NextFilledTankTrip($group: uuid!, $currentMileage: Int!) {
+  trips(
+    where: {
+      group: { _eq: $group }
+      current_mileage: { _gt: $currentMileage }
+      filled_tank: { _eq: true }
+    }
+    order_by: { current_mileage: asc }
+    limit: 1
+  ) {
+    current_mileage
+    email
+    filled_tank
+    group
+    cost
+  }
+}

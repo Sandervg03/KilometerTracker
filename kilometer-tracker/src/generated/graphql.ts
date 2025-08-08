@@ -13,6 +13,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   date: { input: any; output: any; }
+  numeric: { input: any; output: any; }
   uuid: { input: string; output: string; }
 };
 
@@ -686,6 +687,19 @@ export type Mutation_RootUpdate_User_ManyArgs = {
   updates: Array<User_Updates>;
 };
 
+/** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
+export type Numeric_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['numeric']['input']>;
+  _gt?: InputMaybe<Scalars['numeric']['input']>;
+  _gte?: InputMaybe<Scalars['numeric']['input']>;
+  _in?: InputMaybe<Array<Scalars['numeric']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['numeric']['input']>;
+  _lte?: InputMaybe<Scalars['numeric']['input']>;
+  _neq?: InputMaybe<Scalars['numeric']['input']>;
+  _nin?: InputMaybe<Array<Scalars['numeric']['input']>>;
+};
+
 /** column ordering options */
 export enum Order_By {
   /** in ascending order, nulls last */
@@ -1186,6 +1200,7 @@ export type Subscription_RootUser_StreamArgs = {
 /** columns and relationships of "trips" */
 export type Trips = {
   __typename?: 'trips';
+  cost?: Maybe<Scalars['numeric']['output']>;
   current_mileage: Scalars['Int']['output'];
   email: Scalars['String']['output'];
   filled_tank: Scalars['Boolean']['output'];
@@ -1225,6 +1240,7 @@ export type Trips_Aggregate_FieldsCountArgs = {
 /** aggregate avg on columns */
 export type Trips_Avg_Fields = {
   __typename?: 'trips_avg_fields';
+  cost?: Maybe<Scalars['Float']['output']>;
   current_mileage?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -1233,6 +1249,7 @@ export type Trips_Bool_Exp = {
   _and?: InputMaybe<Array<Trips_Bool_Exp>>;
   _not?: InputMaybe<Trips_Bool_Exp>;
   _or?: InputMaybe<Array<Trips_Bool_Exp>>;
+  cost?: InputMaybe<Numeric_Comparison_Exp>;
   current_mileage?: InputMaybe<Int_Comparison_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
   filled_tank?: InputMaybe<Boolean_Comparison_Exp>;
@@ -1247,11 +1264,13 @@ export enum Trips_Constraint {
 
 /** input type for incrementing numeric columns in table "trips" */
 export type Trips_Inc_Input = {
+  cost?: InputMaybe<Scalars['numeric']['input']>;
   current_mileage?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "trips" */
 export type Trips_Insert_Input = {
+  cost?: InputMaybe<Scalars['numeric']['input']>;
   current_mileage?: InputMaybe<Scalars['Int']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   filled_tank?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1261,6 +1280,7 @@ export type Trips_Insert_Input = {
 /** aggregate max on columns */
 export type Trips_Max_Fields = {
   __typename?: 'trips_max_fields';
+  cost?: Maybe<Scalars['numeric']['output']>;
   current_mileage?: Maybe<Scalars['Int']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   group?: Maybe<Scalars['uuid']['output']>;
@@ -1269,6 +1289,7 @@ export type Trips_Max_Fields = {
 /** aggregate min on columns */
 export type Trips_Min_Fields = {
   __typename?: 'trips_min_fields';
+  cost?: Maybe<Scalars['numeric']['output']>;
   current_mileage?: Maybe<Scalars['Int']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   group?: Maybe<Scalars['uuid']['output']>;
@@ -1292,6 +1313,7 @@ export type Trips_On_Conflict = {
 
 /** Ordering options when selecting data from "trips". */
 export type Trips_Order_By = {
+  cost?: InputMaybe<Order_By>;
   current_mileage?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   filled_tank?: InputMaybe<Order_By>;
@@ -1307,6 +1329,8 @@ export type Trips_Pk_Columns_Input = {
 /** select columns of table "trips" */
 export enum Trips_Select_Column {
   /** column name */
+  Cost = 'cost',
+  /** column name */
   CurrentMileage = 'current_mileage',
   /** column name */
   Email = 'email',
@@ -1318,6 +1342,7 @@ export enum Trips_Select_Column {
 
 /** input type for updating data in table "trips" */
 export type Trips_Set_Input = {
+  cost?: InputMaybe<Scalars['numeric']['input']>;
   current_mileage?: InputMaybe<Scalars['Int']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   filled_tank?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1327,18 +1352,21 @@ export type Trips_Set_Input = {
 /** aggregate stddev on columns */
 export type Trips_Stddev_Fields = {
   __typename?: 'trips_stddev_fields';
+  cost?: Maybe<Scalars['Float']['output']>;
   current_mileage?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Trips_Stddev_Pop_Fields = {
   __typename?: 'trips_stddev_pop_fields';
+  cost?: Maybe<Scalars['Float']['output']>;
   current_mileage?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Trips_Stddev_Samp_Fields = {
   __typename?: 'trips_stddev_samp_fields';
+  cost?: Maybe<Scalars['Float']['output']>;
   current_mileage?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -1352,6 +1380,7 @@ export type Trips_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Trips_Stream_Cursor_Value_Input = {
+  cost?: InputMaybe<Scalars['numeric']['input']>;
   current_mileage?: InputMaybe<Scalars['Int']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   filled_tank?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1361,11 +1390,14 @@ export type Trips_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type Trips_Sum_Fields = {
   __typename?: 'trips_sum_fields';
+  cost?: Maybe<Scalars['numeric']['output']>;
   current_mileage?: Maybe<Scalars['Int']['output']>;
 };
 
 /** update columns of table "trips" */
 export enum Trips_Update_Column {
+  /** column name */
+  Cost = 'cost',
   /** column name */
   CurrentMileage = 'current_mileage',
   /** column name */
@@ -1388,18 +1420,21 @@ export type Trips_Updates = {
 /** aggregate var_pop on columns */
 export type Trips_Var_Pop_Fields = {
   __typename?: 'trips_var_pop_fields';
+  cost?: Maybe<Scalars['Float']['output']>;
   current_mileage?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate var_samp on columns */
 export type Trips_Var_Samp_Fields = {
   __typename?: 'trips_var_samp_fields';
+  cost?: Maybe<Scalars['Float']['output']>;
   current_mileage?: Maybe<Scalars['Float']['output']>;
 };
 
 /** aggregate variance on columns */
 export type Trips_Variance_Fields = {
   __typename?: 'trips_variance_fields';
+  cost?: Maybe<Scalars['Float']['output']>;
   current_mileage?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -1595,6 +1630,7 @@ export type InsertTripMutationVariables = Exact<{
   filledTank: Scalars['Boolean']['input'];
   email: Scalars['String']['input'];
   group: Scalars['uuid']['input'];
+  cost?: InputMaybe<Scalars['numeric']['input']>;
 }>;
 
 
@@ -1665,12 +1701,51 @@ export type QueryPasswordByEmailQueryVariables = Exact<{
 
 export type QueryPasswordByEmailQuery = { __typename?: 'query_root', password: Array<{ __typename?: 'password', email: string, password: string }> };
 
+export type LastFilledTankTripQueryVariables = Exact<{
+  group: Scalars['uuid']['input'];
+}>;
+
+
+export type LastFilledTankTripQuery = { __typename?: 'query_root', trips: Array<{ __typename?: 'trips', current_mileage: number, email: string, filled_tank: boolean, group: string, cost?: any | null }> };
+
+export type LastTripByGroupQueryVariables = Exact<{
+  group: Scalars['uuid']['input'];
+}>;
+
+
+export type LastTripByGroupQuery = { __typename?: 'query_root', trips: Array<{ __typename?: 'trips', current_mileage: number, email: string, filled_tank: boolean, group: string, cost?: any | null }> };
+
+export type NextFilledTankTripQueryVariables = Exact<{
+  group: Scalars['uuid']['input'];
+  currentMileage: Scalars['Int']['input'];
+}>;
+
+
+export type NextFilledTankTripQuery = { __typename?: 'query_root', trips: Array<{ __typename?: 'trips', current_mileage: number, email: string, filled_tank: boolean, group: string, cost?: any | null }> };
+
+export type TripsFromMileageQueryVariables = Exact<{
+  group: Scalars['uuid']['input'];
+  mileage: Scalars['Int']['input'];
+}>;
+
+
+export type TripsFromMileageQuery = { __typename?: 'query_root', trips: Array<{ __typename?: 'trips', current_mileage: number, email: string, filled_tank: boolean, group: string, cost?: any | null }> };
+
+export type TripsUntilNextFillQueryVariables = Exact<{
+  group: Scalars['uuid']['input'];
+  currentMileage: Scalars['Int']['input'];
+  nextFillMileage: Scalars['Int']['input'];
+}>;
+
+
+export type TripsUntilNextFillQuery = { __typename?: 'query_root', trips: Array<{ __typename?: 'trips', current_mileage: number, email: string, filled_tank: boolean, group: string, cost?: any | null }> };
+
 export type TripsByGroupQueryVariables = Exact<{
   group: Scalars['uuid']['input'];
 }>;
 
 
-export type TripsByGroupQuery = { __typename?: 'query_root', trips: Array<{ __typename?: 'trips', current_mileage: number, email: string, filled_tank: boolean, group: string }> };
+export type TripsByGroupQuery = { __typename?: 'query_root', trips: Array<{ __typename?: 'trips', current_mileage: number, email: string, filled_tank: boolean, group: string, cost?: any | null }> };
 
 export type QueryUserByEmailQueryVariables = Exact<{
   email: Scalars['String']['input'];

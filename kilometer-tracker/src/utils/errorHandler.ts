@@ -94,6 +94,14 @@ export function handleApiError(error: any, res: NextApiResponse): void {
         });
     }
 
+    // Mileage below previous mileage.
+    if (error.message?.includes("Mileage below previous mileage.")) {
+        return res.status(400).json({
+            message: "Bad input",
+            error: error.message
+        });
+    }
+
     console.log(error);
     // Default error
     return res.status(500).json({

@@ -71,10 +71,10 @@ export class Group {
         return await adminClient.request<Group_Users_Mutation_Response, InsertGroupUserMutationVariables>(INSERT_GROUP_USER, variables);
     }
 
-    async getUsers() {
+    async getUsers(): Promise<string[]> {
         const result: GroupUsersByGroupIdQuery = await adminClient.request<GroupUsersByGroupIdQuery, GroupUsersByGroupIdQueryVariables>(GROUP_USERS_BY_GROUP_ID, { groupId: this.id });
         if (result.group_users.length > 0) {
-            return await Promise.all(result.group_users.map(async user => await User.getByEmail(user.email)));
+            return result.group_users.map(user => user.email);
         } else {
             throw new Error("No user found.");
         }
@@ -104,6 +104,6 @@ export class Group {
         if (result.group_users.length > 0) {
             return result.group_users.map(groupUser => groupUser.group);
         }
-        throw new Error("No group found.");
+        return null;
     }
 }

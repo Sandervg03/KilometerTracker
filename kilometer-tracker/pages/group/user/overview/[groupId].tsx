@@ -108,7 +108,7 @@ export default function GroupOverview() {
                                 {user._firstName + ' ' + user._lastName}
                             </ul>
                         ))}
-                        <p className={styles.description}>Trips made in group: {group._name}</p>
+                        <p className={styles.description}>Trips made since last fuel-refill in group: {group._name}</p>
                         <table className={styles.table}>
                             <tr>
                                 <td>User</td>

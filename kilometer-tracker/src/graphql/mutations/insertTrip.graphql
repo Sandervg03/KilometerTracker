@@ -1,8 +1,9 @@
 mutation InsertTrip(
-    $currentMileage: Int!
-    $filledTank: Boolean!
-  	$email: String!
-  	$group: uuid!
+  $currentMileage: Int!
+  $filledTank: Boolean!
+  $email: String!
+  $group: uuid!
+  $cost: numeric
 ) {
   insert_trips(
     objects: [
@@ -11,6 +12,7 @@ mutation InsertTrip(
             filled_tank: $filledTank
           	email: $email
           	group: $group
+            cost: $cost
         }
     ]
   ) {

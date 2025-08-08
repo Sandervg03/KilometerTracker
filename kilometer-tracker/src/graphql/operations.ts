@@ -39,10 +39,11 @@ export const INSERT_GROUP_USER = `mutation InsertGroupUser($groupId: uuid, $user
 }`;
 
 export const INSERT_TRIP = `mutation InsertTrip(
-    $currentMileage: Int!
-    $filledTank: Boolean!
-  	$email: String!
-  	$group: uuid!
+  $currentMileage: Int!
+  $filledTank: Boolean!
+  $email: String!
+  $group: uuid!
+  $cost: numeric
 ) {
   insert_trips(
     objects: [
@@ -51,6 +52,7 @@ export const INSERT_TRIP = `mutation InsertTrip(
             filled_tank: $filledTank
           	email: $email
           	group: $group
+            cost: $cost
         }
     ]
   ) {
@@ -159,12 +161,92 @@ export const QUERY_PASSWORD_BY_EMAIL = `query QueryPasswordByEmail($email: Strin
   }
 }`;
 
-export const TRIPS_BY_GROUP = `query TripsByGroup($group: uuid!) {
-  trips(where: {group: {_eq: $group}}) {
+export const LAST_FILLED_TANK_TRIP = `query LastFilledTankTrip($group: uuid!) {
+  trips(
+    where: { group: { _eq: $group }, filled_tank: { _eq: true } }
+    order_by: { current_mileage: desc }
+    limit: 1
+  ) {
     current_mileage
     email
     filled_tank
     group
+    cost
+  }
+}`;
+
+export const LAST_TRIP_BY_GROUP = `query LastTripByGroup($group: uuid!) {
+  trips(
+    where: { group: { _eq: $group } }
+    order_by: { current_mileage: desc }
+    limit: 1
+  ) {
+    current_mileage
+    email
+    filled_tank
+    group
+    cost
+  }
+}`;
+
+export const NEXT_FILLED_TANK_TRIP = `query NextFilledTankTrip($group: uuid!, $currentMileage: Int!) {
+  trips(
+    where: {
+      group: { _eq: $group }
+      current_mileage: { _gt: $currentMileage }
+      filled_tank: { _eq: true }
+    }
+    order_by: { current_mileage: asc }
+    limit: 1
+  ) {
+    current_mileage
+    email
+    filled_tank
+    group
+    cost
+  }
+}`;
+
+export const TRIPS_FROM_MILEAGE = `query TripsFromMileage($group: uuid!, $mileage: Int!) {
+  trips(
+    where: { group: { _eq: $group }, current_mileage: { _gt: $mileage } }
+    order_by: { current_mileage: asc }
+  ) {
+    current_mileage
+    email
+    filled_tank
+    group
+    cost
+  }
+}`;
+
+export const TRIPS_UNTIL_NEXT_FILL = `query TripsUntilNextFill(
+  $group: uuid!
+  $currentMileage: Int!
+  $nextFillMileage: Int!
+) {
+  trips(
+    where: {
+      group: { _eq: $group }
+      current_mileage: { _gt: $currentMileage, _lt: $nextFillMileage }
+    }
+    order_by: { current_mileage: asc }
+  ) {
+    current_mileage
+    email
+    filled_tank
+    group
+    cost
+  }
+}`;
+
+export const TRIPS_BY_GROUP = `query TripsByGroup($group: uuid!) {
+  trips(where: { group: { _eq: $group } }) {
+    current_mileage
+    email
+    filled_tank
+    group
+    cost
   }
 }`;
 
