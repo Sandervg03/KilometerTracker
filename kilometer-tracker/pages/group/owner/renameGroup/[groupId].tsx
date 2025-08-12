@@ -5,6 +5,14 @@ import { toastWarn } from "../../../components/toast_messages/toast_warn";
 import { toastError } from "../../../components/toast_messages/toast_error";
 import { toastSuccess } from "../../../components/toast_messages/toast_success";
 import Link from "next/link";
+import {
+  GroupByIdQuery,
+  GroupByIdQueryVariables,
+  RenameGroupMutation,
+  RenameGroupMutationVariables,
+} from "../../../../src/generated/graphql";
+import { userClient } from "../../../../src/graphql/client";
+import { GROUP_BY_ID, RENAME_GROUP } from "../../../../src/graphql/operations";
 
 export default function RenameGroup() {
   const router = useRouter();
@@ -27,15 +35,37 @@ export default function RenameGroup() {
     }
 
     async function verifyGroup() {
-      const response = await fetch(`/api/group/owner/getGroup?groupId=${groupId}`, {
-        method: "GET",
-      });
+      try {
+        const group: GroupByIdQuery = await userClient(
+          document.cookie["token"]
+        ).request<GroupByIdQuery, GroupByIdQueryVariables>(GROUP_BY_ID, {
+          id: Array.isArray(groupId) ? groupId[0] : groupId,
+        });
 
-      if (!response.ok) {
-        const result = await response.json();
-        toastWarn(result.error || "Failed to verify group.");
-        router.push("/group/user/overview");
-        return;
+        if (group.group[0].owner !== localStorage.getItem("email")) {
+          toastWarn("Failed to verify group ownership.");
+          router.push("/group/user/overview");
+          return;
+        }
+      } catch (error) {
+        switch (error.response?.errors?.[0]?.message) {
+          case "Could not verify JWT: JWTExpired":
+            toastError("Session expired, please login again.");
+            router.push("/user/login");
+            break;
+          case "field \"group\" not found in type: 'query_root'":
+            toastWarn("You don't have permissions to view this group.");
+            router.push("/group/user/overview");
+            break;
+          case "check constraint of a select permission has failed":
+            toastWarn("You don't have permissions to view this group.");
+            router.push("/group/user/overview");
+            break;
+          default:
+            toastError("An unknown error occured, please contact support.");
+            router.push("/group/user/overview");
+            break;
+        }
       }
       setIsLoading(false);
     }
@@ -55,42 +85,45 @@ export default function RenameGroup() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/group/owner/rename", {
-        method: "PUT",
-        body: JSON.stringify({
-          groupId: groupId,
+      const rename: RenameGroupMutation = await userClient(
+        document.cookie["token"]
+      ).request<RenameGroupMutation, RenameGroupMutationVariables>(
+        RENAME_GROUP,
+        {
+          id: Array.isArray(groupId) ? groupId[0] : groupId,
           name: formData.name,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+        }
+      );
 
-      console.log(response);
       setIsLoading(false);
 
-      if (response.ok) {
+      if (rename.update_group.affected_rows > 0) {
         toastSuccess("Group renamed succesfully");
         router.push(`/group/user/overview/${groupId}`);
       } else {
-        const result = await response.json();
-        switch (response.status) {
-          case 401:
-            toastWarn(result.error || "Session expired.");
-            router.push("/user/login");
-            break;
-          case 403:
-            toastWarn(result.error || "Permission denied.");
-            router.push("/user/login");
-            break;
-          default:
-            toastWarn(result.error || "Adding user failed.");
-        }
+        toastWarn("Renaming group failed");
       }
     } catch (error) {
-      setIsLoading(false);
-      toastError("Network error. Please check your connection and try again.");
+      switch (error.response?.errors?.[0]?.message) {
+        case "Could not verify JWT: JWTExpired":
+          toastError("Session expired, please login again.");
+          router.push("/user/login");
+          break;
+        case "check constraint of an insert/update permission has failed":
+          toastWarn("You don't have permissions for this action.");
+          router.push(`/group/user/overview/${groupId}`);
+          break;
+        case "field \"update_group\" not found in type: 'mutation_root'":
+          toastWarn("You don't have permissions for this action.");
+          router.push(`/group/user/overview/${groupId}`);
+          break;
+        default:
+          toastError("An unknown error occured, please contact support.");
+          router.push(`/group/user/overview/${groupId}`);
+          break;
+      }
     }
+    setIsLoading(false);
   };
 
   if (isLoading) {
@@ -105,7 +138,9 @@ export default function RenameGroup() {
 
   return (
     <main className={styles.main}>
-      <Link href="/group/user/overview" style={{ position: "absolute", top: 20, left: 20 }}>
+      <Link
+        href="/group/user/overview"
+        style={{ position: "absolute", top: 20, left: 20 }}>
         Go to groups overview
       </Link>
       <div className={styles.container}>
