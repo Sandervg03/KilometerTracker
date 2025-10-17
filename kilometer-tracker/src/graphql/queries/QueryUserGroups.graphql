@@ -1,0 +1,11 @@
+query QueryUserGroups($email: String!) {
+  kilometer_tracker_group_user(where: { email: { _eq: $email } }) {
+    email
+    group
+    role
+    group_rel {
+      id
+      name
+    }
+  }
+}

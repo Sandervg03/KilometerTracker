@@ -1,0 +1,8 @@
+mutation InsertUserConfirmationCode($email: String!) {
+  insert_kilometer_tracker_user_confirmation_code_one(
+    object: { email: $email }
+  ) {
+    email
+    code
+  }
+}

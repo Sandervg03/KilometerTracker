@@ -1,0 +1,13 @@
+mutation InsertUser($email: String!) {
+  insert_kilometer_tracker_user_one(
+    object: {
+      email: $email
+      password: null
+      status: "AWAITING_CONFIRMATION"
+      firstName: null
+      lastName: null
+    }
+  ) {
+    email
+  }
+}

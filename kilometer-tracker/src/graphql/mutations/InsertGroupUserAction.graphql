@@ -1,0 +1,7 @@
+mutation InsertGroupUserAction($arg1: InsertGroupUserInput!) {
+  InsertGroupUser(arg1: $arg1) {
+    email
+    group
+    role
+  }
+}

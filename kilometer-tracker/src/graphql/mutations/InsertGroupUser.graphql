@@ -1,0 +1,7 @@
+mutation InsertGroupUser($email: String!) {
+  insert_kilometer_tracker_group_user_one(object: { email: $email }) {
+    email
+    group
+    role
+  }
+}
