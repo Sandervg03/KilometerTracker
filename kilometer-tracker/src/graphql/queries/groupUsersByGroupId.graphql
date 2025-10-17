@@ -1,6 +1,0 @@
-query GroupUsersByGroupId($groupId: uuid!) {
-  group_users(where: {group: {_eq: $groupId}}) {
-    email
-    group
-  }
-}

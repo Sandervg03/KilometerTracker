@@ -1,9 +1,0 @@
-query TripsByGroup($group: uuid!) {
-  trips(where: { group: { _eq: $group } }) {
-    current_mileage
-    email
-    filled_tank
-    group
-    cost
-  }
-}

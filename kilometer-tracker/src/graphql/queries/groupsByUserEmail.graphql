@@ -1,6 +1,0 @@
-query GroupsByUserEmail($email: String!) {
-  group_users(where: {email: {_eq: $email}}) {
-    email
-    group
-  }
-}
